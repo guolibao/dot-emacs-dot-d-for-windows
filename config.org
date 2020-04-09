@@ -1,0 +1,7 @@
+#+BEGIN_SRC emacs-lisp
+(use-package auctex
+:defer t
+:ensure t
+:config
+(setq Tex-auto-save t))
+#+END_SRC
