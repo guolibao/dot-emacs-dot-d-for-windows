@@ -1,7 +1,179 @@
+* auctex
 #+BEGIN_SRC emacs-lisp
 (use-package auctex
 :defer t
 :ensure t
 :config
 (setq Tex-auto-save t))
+#+END_SRC
+
+* ggtags
+#+BEGIN_SRC emacs-lisp
+(use-package ggtags
+  :ensure t)
+;; get rid of M-ss keymap for ggtags-navigation-isearch-forward,
+;; because it is conflict with M-s for avy-find-char
+
+;; (define-key ggtags-navigation-map (kbd "\M-ss") nil)
+
+;; remove the key to ggtags-navigation-last-error, because it conflicts with goto the beginning of the page
+;; (define-key ggtags-navigation-map (kbd "\M->") nil)
+
+;; remove the key to firt-error, because it conflicts with goto the end of the page
+;; (define-key ggtags-navigation-map (kbd "\M-<") nil)
+(define-key ggtags-mode-prefix-map "\M-g" nil) ;remove ggtags-grep default binding, for conflicts with magit
+(define-key ggtags-mode-prefix-map "\M-r" 'ggtags-grep)
+#+END_SRC
+
+** loading ggtags if it is in c++ mode or c mode
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'ggtags
+  (add-hook 'c++-mode-hook 'ggtags-mode)
+  (add-hook 'c-mode-hook 'ggtags-mode))
+#+END_SRC
+
+* visiting config, reload config, visit the init.el
+** Visiting the config.org
+#+BEGIN_SRC emacs-lisp
+(defun config-visit ()
+  "Visitthe config.org file"
+  (interactive)
+  (find-file "~/.emacs.d/config.org"))
+(global-set-key (kbd "C-c e") 'config-visit)
+#+END_SRC
+
+
+** Visiting the init.el
+#+BEGIN_SRC emacs-lisp
+(defun config-init ()
+  "Visitthe init.el file"
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
+(global-set-key (kbd "C-c i") 'config-init)
+#+END_SRC
+
+** Reloading the config.org
+#+BEGIN_SRC emacs-lisp
+(defun config-reload ()
+    "Reload ~/.emacs.d/config.org at runtime"
+  (interactive)
+  (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+(global-set-key (kbd "C-c r") 'config-reload)
+#+END_SRC
+
+* Electric pair
+#+BEGIN_SRC emacs-lisp
+(setq electric-pair-pairs '(
+			     (?\{ . ?\})
+			     (?\( . ?\))
+			     (?\[ . ?\])
+			     (?\" . ?\")
+			     ))
+#+END_SRC
+
+
+* sudo edit 
+#+BEGIN_SRC emacs-lisp
+(use-package sudo-edit
+  :ensure t
+  :bind
+  ("s-e" . sudo-edit))
+#+END_SRC
+
+* shwo parenthesis mode 
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
+#+END_SRC
+
+* Moving around Emacs 
+** enable ido mode
+#+BEGIN_SRC emacs-lisp
+(setq ido-enable-flex-matching nil)
+(setq ido-create-new-buffer 'always)
+(setq ido-everywhere 1)
+(ido-mode 1)
+#+END_SRC
+
+** ido-vertical-mode
+#+BEGIN_SRC emacs-lisp
+(use-package ido-vertical-mode
+  :ensure t
+  :init
+  (ido-vertical-mode 1))
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+#+END_SRC
+
+
+** Buffers
+*** enable ibuffer
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+#+END_SRC
+
+*** expert 
+deleting buffers from ibuffer will not ask to confirm
+#+BEGIN_SRC emacs-lisp
+(setq ibuffer-expert t)
+#+END_SRC
+
+*** switch buffer
+#+BEGIN_SRC emacs-lisp
+(setq ibuffer-expert t)
+#+END_SRC
+
+
+*** switch bufffer
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x b") 'ido-switch-buffer)
+#+END_SRC
+
+
+*** avy 
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+  :ensure t
+  :bind
+  ("M-s" . avy-goto-char)
+  ("\C-c a" . avy-goto-char))
+#+END_SRC
+
+*** ace-window 
+#+BEGIN_SRC emacs-lisp
+(use-package ace-window
+  :ensure t
+  :config
+  ;; aw-keys - the initial characters used in window labels, default is 1-9
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  ;; if you want these keys to work with fewer than three windows, you need to have aw-dispatch-always to t
+  (setq aw-dispatch-always t)
+  :bind
+  ([remap other-window] . ace-window))
+#+END_SRC
+
+
+*** following window splits 
+#+BEGIN_SRC emacs-lisp
+(defun split-and-follow-horizontally ()
+  (interactive)
+  (split-window-below)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 2") 'split-and-follow-hoizontally)
+
+
+(defun split-and-follow-vertically ()
+  (interactive)
+  (split-window-right)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+#+END_SRC
+
+
+*** which-key 
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
 #+END_SRC
