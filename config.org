@@ -234,7 +234,10 @@ When align-regexp, using spaces instead of tabs.
   (setq google-translate-translation-directions-alist
         '(("ja" . "en") ("en" . "de") ("de" . "fr") ("fr" . "de"))))
 
-
+** turn off emacs auto line wrapping
+#+BEGIN_SRC emacs-lisp
+(setq-default truncate-lines t)
+#+END_SRC
 ** Auto Complete
 #+BEGIN_SRC emacs-lisp
 ;; (use-package auto-complete
