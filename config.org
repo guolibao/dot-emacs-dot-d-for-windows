@@ -71,6 +71,11 @@
 			     ))
 #+END_SRC
 
+and now to enable it
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode t)
+#+END_SRC
+
 * sudo edit 
 #+BEGIN_SRC emacs-lisp
 (use-package sudo-edit
