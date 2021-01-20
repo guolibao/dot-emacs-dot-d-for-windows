@@ -267,6 +267,7 @@ When align-regexp, using spaces instead of tabs.
                                                            (ditaa . t)
                                                            (calc . t)
                                                            (latex . t)
+							   (dot . t)
                                                            )))
 (setq org-plantuml-jar-path
       (expand-file-name "~/plantuml.jar"))
@@ -327,3 +328,27 @@ Systax highlighting for documents exported to HTML
      (error "No `default-directory` to open")))
 #+END_SRC
 
+* Setting up graphviz-dot-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package graphviz-dot-mode
+    :ensure t
+    :config
+    (setq graphviz-dot-indent-width 4))
+
+  ;; (use-package company-graphviz-dot
+  ;;   )
+#+END_SRC
+* Set path and exec-path for cygwin
+#+BEGIN_SRC emacs-lisp
+(if (eq system-type 'windows-nt)
+    (setenv "PATH"
+	      (concat
+	       "C:\\cygwin64\\bin" ";"
+	       (getenv "PATH")
+	       )
+	      )
+
+  (setq exec-path (append '("C:/cygwin64/bin"
+			      )
+			    exec-path)))
+#+END_SRC
