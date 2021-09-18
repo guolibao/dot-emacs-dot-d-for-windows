@@ -32,6 +32,10 @@
   (add-hook 'c-mode-hook 'ggtags-mode))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (setq-default indent-tabs-mode nil)
+#+END_SRC
+
 * visiting config, reload config, visit the init.el
 ** Visiting the config.org
 #+BEGIN_SRC emacs-lisp
